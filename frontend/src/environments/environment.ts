@@ -1,0 +1,5 @@
+export const environment = {
+    client_id : "08aa866199364c348cc8e349eb2074c5",
+    response_type : "code",
+    redirect_uri : "http://localhost:3000/callback",
+}
