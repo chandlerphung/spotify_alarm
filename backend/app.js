@@ -1,9 +1,10 @@
-require('dotenv').config();
-const { default: axios } = require('axios');
+require("dotenv").config();
+const { default: axios } = require("axios");
 const express = require("express");
 const app = express();
 const port = 3000;
-const { config } = require("./config")
+const config = require("./config");
+const utils = require("./utils");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -13,36 +14,51 @@ app.get("/", (req, res) => {
 });
 
 app.get("/callback", async (req, res) => {
-  const code = req.query.code
-  const state = req.query.state
-  const error = req.query.error
+  const code = req.query.code;
+  const state = req.query.state;
+  const error = req.query.error;
 
-  if (error) {
-    res.redirect(401,"https://localhost:4200")
+  console.log(`Code:${code}`);
+  console.log(`State:${state}`);
+  console.log(`Error:${error}`);
+
+  console.log(`Content: ${config.content_type}`);
+  console.log(`grant: ${config.grant_type}`);
+  console.log(`redirect: ${config.redirect_uri}`);
+  console.log(
+    `authehader: ${utils.createBasicAuthHeader(
+      config.client_id,
+      process.env.CLIENT_SECRET,
+    )}`,
+  );
+
+  if (error !== undefined) {
+    res.redirect("http://localhost:4200");
   }
 
   try {
-
     const response = await axios({
       method: "post",
       url: "https://accounts.spotify.com/api/token",
       data: {
-        "grant_type" : config.grant_type,
-        "code" : code,
-        "redirect_uri" : config.redirect_uri
+        grant_type: config.grant_type,
+        code: code,
+        redirect_uri: config.redirect_uri,
       },
       headers: {
-        "Authorization" : createBasicAuthHeader(config.client_id,process.env.CLIENT_SECRET),
-        "Content-Type" : config.content_type
-      }
-    })
+        Authorization: utils.createBasicAuthHeader(
+          config.client_id,
+          process.env.CLIENT_SECRET,
+        ),
+        "Content-Type": config.content_type,
+      },
+    });
 
-    console.log(response.data)
-    
+    console.log(response.data);
+    res.redirect("http://localhost:4200");
   } catch (error) {
-      console.error(`Error ${error.response.status}`)
+    console.error(`Error ${error.response.status}`);
   }
-
 });
 
 app.listen(port, () => {

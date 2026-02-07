@@ -9,19 +9,18 @@ import { generateRandomString } from '../../utils/auth.util';
 })
 export class HomeComponent {
   signIn() {
-
     // first redirect user to the spotify login page and the once logged in
     // the user will be redirected to backend with code and state
     // once the user hits the redirect page it will send a post to spotify
     // api and then receive all of the necessary data to authenticate them
 
-    const spotify_auth_url = 
-    "https://accounts.spotify.com/authorize?" +
-    `client_id=${environment.client_id}&` +
-    `response_type=${environment.response_type}&` +
-    `redirect_uri=${environment.redirect_uri}` +
-    `state=${generateRandomString(16)}`
+    const spotify_auth_url =
+      'https://accounts.spotify.com/authorize?' +
+      `client_id=${environment.client_id}&` +
+      `response_type=${environment.response_type}&` +
+      `redirect_uri=${environment.redirect_uri}&` +
+      `state=${generateRandomString(16)}`;
 
-    window.location.href=spotify_auth_url
+    window.location.href = spotify_auth_url;
   }
 }
