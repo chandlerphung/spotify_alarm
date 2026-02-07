@@ -18,20 +18,6 @@ app.get("/callback", async (req, res) => {
   const state = req.query.state;
   const error = req.query.error;
 
-  console.log(`Code:${code}`);
-  console.log(`State:${state}`);
-  console.log(`Error:${error}`);
-
-  console.log(`Content: ${config.content_type}`);
-  console.log(`grant: ${config.grant_type}`);
-  console.log(`redirect: ${config.redirect_uri}`);
-  console.log(
-    `authehader: ${utils.createBasicAuthHeader(
-      config.client_id,
-      process.env.CLIENT_SECRET,
-    )}`,
-  );
-
   if (error !== undefined) {
     res.redirect("http://localhost:4200");
   }
