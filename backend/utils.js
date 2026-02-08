@@ -4,6 +4,11 @@ function createBasicAuthHeader(clientId, clientSecret) {
   );
 }
 
+function getTokenExpiration(expiresInSeconds) {
+  return new Date(Date.now() + expiresInSeconds * 1000);
+}
+
 module.exports = {
   createBasicAuthHeader,
+  getTokenExpiration,
 };

@@ -3,51 +3,34 @@ const { default: axios } = require("axios");
 const express = require("express");
 const app = express();
 const port = 3000;
-const config = require("./config/config");
+const config = require("./configs/config");
 const utils = require("./utils");
-const { run } = require("./config/db")
+const { run } = require("./configs/db");
+const User = require("./models/user.model");
+const { loginWithSpotify } = require("./services/auth.service");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
 app.get("/callback", async (req, res) => {
-  const code = req.query.code;
-  const state = req.query.state;
-  const error = req.query.error;
+  const { code, error } = req.query;
 
-  if (error !== undefined) {
-    res.redirect("http://localhost:4200");
+  if (error) {
+    return res.redirect("http://localhost:4200");
   }
 
   try {
-    const response = await axios({
-      method: "post",
-      url: "https://accounts.spotify.com/api/token",
-      data: {
-        grant_type: config.grant_type,
-        code: code,
-        redirect_uri: config.redirect_uri,
-      },
-      headers: {
-        Authorization: utils.createBasicAuthHeader(
-          config.client_id,
-          process.env.CLIENT_SECRET,
-        ),
-        "Content-Type": config.content_type,
-      },
-    });
+    const user = await loginWithSpotify(code);
 
-    console.log(response.data);
+    // later → create session/JWT here
+
     res.redirect("http://localhost:4200");
-  } catch (error) {
-    console.error(`Error ${error.response.status}`);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
   }
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Listening on port ${port}`);
 });
