@@ -3,8 +3,9 @@ const { default: axios } = require("axios");
 const express = require("express");
 const app = express();
 const port = 3000;
-const config = require("./config");
+const config = require("./config/config");
 const utils = require("./utils");
+const { run } = require("./config/db")
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
