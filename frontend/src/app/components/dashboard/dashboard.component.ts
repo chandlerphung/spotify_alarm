@@ -34,6 +34,7 @@ interface UserData {
   scope: string;
   token_expires_at: string;
   playlists: any[];
+  alarms: SavedAlarm[]; // <-- add this
   createdAt: string;
   updatedAt: string;
   __v: number;
@@ -262,8 +263,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
       next: (data) => {
         console.log('SUCCESS - Setting userData:', data);
         this.userData = data;
+
+        // 🔥 Sync alarms from DB to localStorage
+        const alarmsFromDb = (data as any).alarms ?? [];
+        if (Array.isArray(alarmsFromDb)) {
+          this.savedAlarms = alarmsFromDb.map((alarm: any) => ({
+            time: alarm.time,
+            days: alarm.days,
+            daysText: alarm.daysText,
+            playlist: alarm.playlist || null,
+          }));
+          localStorage.setItem('spotify_alarms', JSON.stringify(this.savedAlarms));
+        }
+
         this.loadingUserData = false;
-        console.log('Loading state after success:', this.loadingUserData);
         this.cdr.detectChanges(); // Force update UI
       },
       error: (error) => {
