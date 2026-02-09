@@ -8,7 +8,7 @@ router.get("/callback", async (req, res) => {
   const { code, error } = req.query;
 
   if (error) {
-    return res.redirect("http://localhost:4200");
+    return res.redirect(`${process.env.FRONTEND_URI}`);
   }
 
   try {
@@ -22,7 +22,7 @@ router.get("/callback", async (req, res) => {
       expiresIn: "1h",
     }); // Token expires in 1 hour
 
-    res.redirect(`http://localhost:4200/dashboard?token=${accessToken}`);
+    res.redirect(`${process.env.FRONTEND_URI}/dashboard?token=${accessToken}`);
   } catch (err) {
     console.error(err);
     res.sendStatus(500);

@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 interface Day {
   short: string;
@@ -228,14 +229,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     };
 
     this.http
-      .request(
-        'delete',
-        `https://nonrectifiable-isotopic-venita.ngrok-free.dev/api/alarms/${userId}`,
-        {
-          headers,
-          body,
-        },
-      )
+      .request('delete', `${environment.backend_uri}/api/alarms/${userId}`, {
+        headers,
+        body,
+      })
       .subscribe({
         next: (res) => console.log('Alarm deleted from DB', res),
         error: (err) => console.error('Error deleting alarm from DB', err),
@@ -269,7 +266,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       'ngrok-skip-browser-warning': 'true',
     });
 
-    const apiUrl = `https://nonrectifiable-isotopic-venita.ngrok-free.dev/api/users/${this.spotifyId}`;
+    const apiUrl = `${environment.backend_uri}/api/users/${this.spotifyId}`;
 
     this.http.get<UserData>(apiUrl, { headers }).subscribe({
       next: (data) => {
@@ -336,11 +333,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
 
     this.http
-      .patch(
-        `https://nonrectifiable-isotopic-venita.ngrok-free.dev/api/alarms/${userId}`,
-        { alarm },
-        { headers },
-      )
+      .patch(`${environment.backend_uri}/api/alarms/${userId}`, { alarm }, { headers })
       .subscribe({
         next: (res) => console.log('Alarm saved to DB', res),
         error: (err) => console.error('Error saving alarm to DB', err),

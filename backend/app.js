@@ -11,7 +11,7 @@ const alarmRoutes = require("./routes/alarm.route");
 
 app.use(
   cors({
-    origin: "http://localhost:4200", // Your Angular app URL
+    origin: `${process.env.FRONTEND_URI}`, // Your Angular app URL
     credentials: true, // Allow cookies if needed later
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allowedHeaders: [
