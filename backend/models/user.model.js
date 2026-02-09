@@ -29,10 +29,18 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
 
-    playlists: {
-      type: [String],
-      default: [],
-    },
+    playlists: [
+      {
+        name: {
+          type: String,
+          required: true,
+        },
+        uri: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
   },
   {
     timestamps: true, // still useful for auditing/logging

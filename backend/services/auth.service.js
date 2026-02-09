@@ -3,6 +3,7 @@ const User = require("../models/user.model");
 const config = require("../configs/config");
 const utils = require("../utils");
 const { getUserProfile } = require("./user.service");
+const { fetchAndSavePlaylists } = require("./playlist.service");
 
 async function refreshAccessToken(refreshToken) {
   const tokenResponse = await axios.post(
@@ -66,7 +67,7 @@ async function loginWithSpotify(code) {
       token_expires_at: utils.getTokenExpiration(tokenData.expires_in),
     });
   } else {
-    // User exists - refresh the token instead
+    // Refresh token
     const refreshedTokenData = await refreshAccessToken(user.refresh_token);
 
     user.access_token = refreshedTokenData.access_token;
@@ -77,6 +78,14 @@ async function loginWithSpotify(code) {
   }
 
   await user.save();
+
+  // 4️⃣ Fetch + save playlists automatically
+  try {
+    await fetchAndSavePlaylists(user);
+    console.log("Playlists saved on login");
+  } catch (err) {
+    console.error("Failed to fetch playlists on login:", err.message);
+  }
 
   return user;
 }

@@ -14,6 +14,31 @@
     <button class="logout-btn" (click)="logout()">Logout</button>
   </header>
 
+  <!-- Add this wherever you want to display the playlists -->
+  <div class="user-info-section">
+    <button (click)="fetchUserInfo()" [disabled]="loadingUserData">
+      {{ loadingUserData ? 'Loading...' : 'View Playlists' }}
+    </button>
+
+    <div *ngIf="userDataError" class="error-message">
+      {{ userDataError }}
+    </div>
+
+    <div *ngIf="userData" class="playlists-container">
+      <h3>Your Playlists</h3>
+
+      <div *ngIf="userData.playlists.length === 0" class="empty-state">No playlists found</div>
+
+      <div *ngIf="userData.playlists.length > 0" class="playlists-list">
+        <div *ngFor="let playlist of userData.playlists" class="playlist-item">
+          <div class="playlist-name">
+            {{ playlist.name }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Main alarm card -->
   <div class="alarm-card">
     <div class="alarm-icon">⏰</div>

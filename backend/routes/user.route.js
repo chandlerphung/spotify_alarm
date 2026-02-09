@@ -12,15 +12,18 @@ router.get("/users/:spotify_id", authenticateToken, async (req, res) => {
   }
 
   try {
-    // Fetch user data from DB
-    const userData = await User.findOne({ spotify_id: spotify_id });
+    // Option 1: Get only playlists field
+    const userData = await User.findOne(
+      { spotify_id: spotify_id },
+      { playlists: 1 },
+    );
 
-    // Check if user exists
     if (!userData) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    res.json(userData);
+    // Return just the playlists array
+    res.json({ playlists: userData.playlists });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch user data" });

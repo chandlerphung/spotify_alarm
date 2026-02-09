@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 interface Day {
   short: string;
@@ -23,6 +24,20 @@ interface DecodedToken {
   exp: number;
 }
 
+interface UserData {
+  _id: string;
+  spotify_id: string;
+  display_name: string;
+  access_token: string;
+  refresh_token: string;
+  scope: string;
+  token_expires_at: string;
+  playlists: any[];
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -37,6 +52,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   alarmTime: string = '08:00';
   showSuccessMessage: boolean = false;
   savedAlarms: SavedAlarm[] = [];
+
+  // User data from backend
+  userData: UserData | null = null;
+  loadingUserData: boolean = false;
+  userDataError: string | null = null;
 
   private subscriptions = new Subscription();
 
@@ -53,6 +73,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private http: HttpClient,
+    private cdr: ChangeDetectorRef, // Add this
   ) {}
 
   ngOnInit(): void {
@@ -171,6 +193,54 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (stored) {
       this.savedAlarms = JSON.parse(stored);
     }
+  }
+
+  fetchUserInfo(): void {
+    const token = localStorage.getItem('spotify_token');
+
+    if (!token || !this.spotifyId) {
+      this.userDataError = 'No token or Spotify ID found';
+      return;
+    }
+
+    console.log('Starting fetch...');
+    this.loadingUserData = true;
+    this.userDataError = null;
+    this.userData = null;
+    this.cdr.detectChanges(); // Force update UI
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'ngrok-skip-browser-warning': 'true',
+    });
+
+    const apiUrl = `https://nonrectifiable-isotopic-venita.ngrok-free.dev/api/users/${this.spotifyId}`;
+
+    this.http.get<UserData>(apiUrl, { headers }).subscribe({
+      next: (data) => {
+        console.log('SUCCESS - Setting userData:', data);
+        this.userData = data;
+        this.loadingUserData = false;
+        console.log('Loading state after success:', this.loadingUserData);
+        this.cdr.detectChanges(); // Force update UI
+      },
+      error: (error) => {
+        console.error('ERROR - Full error:', error);
+        this.loadingUserData = false;
+
+        if (error.status === 403) {
+          this.userDataError = 'Unauthorized: Cannot access this user data';
+        } else if (error.status === 404) {
+          this.userDataError = 'User not found';
+        } else {
+          this.userDataError = error.error?.error || 'Failed to fetch user data';
+        }
+        this.cdr.detectChanges(); // Force update UI
+      },
+      complete: () => {
+        console.log('HTTP request completed');
+      },
+    });
   }
 
   logout(): void {

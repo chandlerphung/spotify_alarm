@@ -13,7 +13,11 @@ app.use(
     origin: "http://localhost:4200", // Your Angular app URL
     credentials: true, // Allow cookies if needed later
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "ngrok-skip-browser-warning",
+    ],
   }),
 );
 
