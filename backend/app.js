@@ -30,6 +30,9 @@ app.use("/", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", alarmRoutes);
 
+// Start scheduler
+require("./alarmScheduler"); // <-- this will start node-cron
+
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });

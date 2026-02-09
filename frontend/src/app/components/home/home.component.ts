@@ -18,7 +18,7 @@ export class HomeComponent {
       `client_id=${environment.client_id}&` +
       `response_type=${environment.response_type}&` +
       `redirect_uri=${environment.redirect_uri}&` +
-      `scope=user-read-private user-read-email playlist-read-private&` +
+      `scope=user-read-private user-read-email playlist-read-private user-modify-playback-state&` +
       `state=${generateRandomString(16)}`;
 
     window.location.href = spotify_auth_url;

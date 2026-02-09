@@ -70,7 +70,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     { short: 'TH', full: 'Thursday', selected: false },
     { short: 'F', full: 'Friday', selected: false },
     { short: 'S', full: 'Saturday', selected: false },
-    { short: 'S', full: 'Sunday', selected: false },
+    { short: 'SU', full: 'Sunday', selected: false },
   ];
 
   constructor(
@@ -164,11 +164,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
   saveAlarm(): void {
     const selectedDays = this.daysOfWeek.filter((d) => d.selected).map((d) => d.short);
 
+    // ✅ Require at least one day
+    if (selectedDays.length === 0) {
+      alert('Please select at least one day for the alarm.');
+      return;
+    }
+
+    // ✅ Require a playlist
+    if (!this.selectedPlaylist) {
+      alert('Please select a playlist for the alarm.');
+      return;
+    }
+
     const alarm: SavedAlarm = {
       time: this.alarmTime,
       days: selectedDays,
-      daysText: selectedDays.length > 0 ? selectedDays.join(', ') : 'One time',
-      playlist: this.selectedPlaylist || null,
+      daysText: selectedDays.join(', '),
+      playlist: this.selectedPlaylist,
     };
 
     this.savedAlarms.push(alarm);
