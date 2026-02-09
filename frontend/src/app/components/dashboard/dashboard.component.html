@@ -30,6 +30,7 @@
     <!-- Days of week selector -->
     <div class="days-container">
       <p class="days-label">Repeat on:</p>
+
       <div class="days-grid">
         <button
           *ngFor="let day of daysOfWeek"
@@ -55,9 +56,11 @@
   <!-- Current alarms list -->
   <div class="alarms-list" *ngIf="savedAlarms.length > 0">
     <h3 class="list-title">Your Alarms</h3>
+
     <div class="alarm-item" *ngFor="let alarm of savedAlarms">
       <div class="alarm-item-time">{{ alarm.time }}</div>
       <div class="alarm-item-days">{{ alarm.daysText }}</div>
+
       <button class="delete-btn" (click)="deleteAlarm(alarm)">×</button>
     </div>
   </div>
