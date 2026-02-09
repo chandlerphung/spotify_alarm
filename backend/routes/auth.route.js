@@ -16,7 +16,7 @@ router.get("/callback", async (req, res) => {
 
     // later → create session/JWT here
 
-    res.redirect("http://localhost:4200");
+    res.redirect("http://localhost:4200/dashboard");
   } catch (err) {
     console.error(err);
     res.sendStatus(500);

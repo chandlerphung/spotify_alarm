@@ -1,0 +1,382 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1db954 0%, #191414 100%);
+  overflow-x: hidden;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.dashboard-container {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  color: white;
+  text-align: center;
+  padding: 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  animation: fadeIn 1s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-avatar {
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  text-align: left;
+}
+
+.welcome-text {
+  font-size: 0.75rem;
+  font-weight: 400;
+  opacity: 0.7;
+  margin: 0;
+}
+
+.username {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+.logout-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Alarm Card */
+.alarm-card {
+  margin-bottom: 2rem;
+}
+
+.alarm-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.alarm-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  letter-spacing: -1px;
+}
+
+.alarm-subtitle {
+  font-size: 1.1rem;
+  opacity: 0.85;
+  margin-bottom: 2.5rem;
+  font-weight: 300;
+}
+
+/* Time Picker */
+.time-picker-container {
+  margin-bottom: 2rem;
+}
+
+.time-display {
+  display: inline-block;
+}
+
+.time-input {
+  font-size: 3.5rem;
+  font-weight: 700;
+  background: transparent;
+  border: none;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  padding: 0.5rem 1.5rem;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.time-input:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.time-input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.time-input::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Days of Week */
+.days-container {
+  margin-bottom: 2rem;
+}
+
+.days-label {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  margin-bottom: 1rem;
+}
+
+.days-grid {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.day-btn {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  background: transparent;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.day-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.day-btn.active {
+  background: #1db954;
+  border-color: #1db954;
+}
+
+/* Save Button */
+.save-btn {
+  background: #1db954;
+  color: white;
+  border: none;
+  padding: 1rem 3rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(29, 185, 84, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.save-btn:hover {
+  background: #1ed760;
+  transform: translateY(-2px);
+  box-shadow: 0 15px 40px rgba(29, 185, 84, 0.4);
+}
+
+.save-btn:active {
+  transform: translateY(0);
+}
+
+.btn-icon {
+  font-size: 1.2rem;
+}
+
+/* Success Message */
+.success-message {
+  margin-top: 1.5rem;
+  padding: 0.75rem;
+  background: rgba(29, 185, 84, 0.15);
+  border-radius: 10px;
+  font-size: 0.9rem;
+  opacity: 0.9;
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* Alarms List */
+.alarms-list {
+  margin-top: 3rem;
+  opacity: 0.95;
+}
+
+.list-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  opacity: 0.85;
+}
+
+.alarm-item {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 15px;
+  padding: 1.2rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+}
+
+.alarm-item:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.alarm-item-time {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.alarm-item-days {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  flex: 1;
+  margin-left: 1rem;
+}
+
+.delete-btn {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: white;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.delete-btn:hover {
+  background: rgba(255, 0, 0, 0.2);
+  border-color: rgba(255, 0, 0, 0.4);
+}
+
+/* Decorative background elements */
+.bg-circle {
+  position: fixed;
+  border-radius: 50%;
+  opacity: 0.1;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.circle-1 {
+  width: 300px;
+  height: 300px;
+  background: #1db954;
+  top: -100px;
+  right: -100px;
+}
+
+.circle-2 {
+  width: 200px;
+  height: 200px;
+  background: white;
+  bottom: -50px;
+  left: -50px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .dashboard-container {
+    padding: 1.5rem;
+  }
+
+  .dashboard-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .username {
+    font-size: 1rem;
+  }
+
+  .alarm-title {
+    font-size: 2rem;
+  }
+
+  .alarm-subtitle {
+    font-size: 1rem;
+  }
+
+  .time-input {
+    font-size: 3rem;
+  }
+
+  .alarm-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .alarm-item-days {
+    margin-left: 0;
+  }
+}

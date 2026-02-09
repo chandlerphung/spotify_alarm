@@ -1,0 +1,64 @@
+<div class="bg-circle circle-1"></div>
+<div class="bg-circle circle-2"></div>
+
+<div class="dashboard-container">
+  <!-- Header with user info -->
+  <header class="dashboard-header">
+    <div class="user-info">
+      <div class="user-avatar">🎵</div>
+      <div class="user-details">
+        <h2 class="welcome-text">Welcome back,</h2>
+        <h1 class="username">{{ username }}</h1>
+      </div>
+    </div>
+    <button class="logout-btn" (click)="logout()">Logout</button>
+  </header>
+
+  <!-- Main alarm card -->
+  <div class="alarm-card">
+    <div class="alarm-icon">⏰</div>
+    <h2 class="alarm-title">Set Your Wake-Up Alarm</h2>
+    <p class="alarm-subtitle">Choose when you want to wake up to your favorite music</p>
+
+    <!-- Time picker -->
+    <div class="time-picker-container">
+      <div class="time-display">
+        <input type="time" class="time-input" [(ngModel)]="alarmTime" (change)="onTimeChange()" />
+      </div>
+    </div>
+
+    <!-- Days of week selector -->
+    <div class="days-container">
+      <p class="days-label">Repeat on:</p>
+      <div class="days-grid">
+        <button
+          *ngFor="let day of daysOfWeek"
+          class="day-btn"
+          [class.active]="day.selected"
+          (click)="toggleDay(day)"
+        >
+          {{ day.short }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Save button -->
+    <button class="save-btn" (click)="saveAlarm()">
+      <span class="btn-icon">💾</span>
+      Save Alarm
+    </button>
+
+    <!-- Success message -->
+    <div class="success-message" *ngIf="showSuccessMessage">✓ Alarm saved successfully!</div>
+  </div>
+
+  <!-- Current alarms list -->
+  <div class="alarms-list" *ngIf="savedAlarms.length > 0">
+    <h3 class="list-title">Your Alarms</h3>
+    <div class="alarm-item" *ngFor="let alarm of savedAlarms">
+      <div class="alarm-item-time">{{ alarm.time }}</div>
+      <div class="alarm-item-days">{{ alarm.daysText }}</div>
+      <button class="delete-btn" (click)="deleteAlarm(alarm)">×</button>
+    </div>
+  </div>
+</div>
