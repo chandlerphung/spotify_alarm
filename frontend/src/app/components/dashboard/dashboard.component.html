@@ -91,7 +91,10 @@
 
     <div class="alarm-item" *ngFor="let alarm of savedAlarms">
       <div class="alarm-item-time">{{ alarm.time }}</div>
-      <div class="alarm-item-days">{{ alarm.daysText }}</div>
+      <div class="alarm-item-days">
+        {{ alarm.daysText }}
+        <span *ngIf="alarm.playlist"> - 🎵 {{ alarm.playlist.name }}</span>
+      </div>
 
       <button class="delete-btn" (click)="deleteAlarm(alarm)">×</button>
     </div>

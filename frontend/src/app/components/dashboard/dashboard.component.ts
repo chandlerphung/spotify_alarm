@@ -16,6 +16,7 @@ interface SavedAlarm {
   time: string;
   days: string[];
   daysText: string;
+  playlist?: any; // <-- new property
 }
 
 interface DecodedToken {
@@ -65,7 +66,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     { short: 'M', full: 'Monday', selected: false },
     { short: 'T', full: 'Tuesday', selected: false },
     { short: 'W', full: 'Wednesday', selected: false },
-    { short: 'T', full: 'Thursday', selected: false },
+    { short: 'TH', full: 'Thursday', selected: false },
     { short: 'F', full: 'Friday', selected: false },
     { short: 'S', full: 'Saturday', selected: false },
     { short: 'S', full: 'Sunday', selected: false },
@@ -166,10 +167,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
       time: this.alarmTime,
       days: selectedDays,
       daysText: selectedDays.length > 0 ? selectedDays.join(', ') : 'One time',
+      playlist: this.selectedPlaylist || null, // <-- include selected playlist
     };
 
     this.savedAlarms.push(alarm);
-
     localStorage.setItem('spotify_alarms', JSON.stringify(this.savedAlarms));
 
     this.showSuccessMessage = true;
@@ -178,7 +179,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.showSuccessMessage = false;
     }, 3000);
 
+    // Reset days and playlist
     this.daysOfWeek.forEach((d) => (d.selected = false));
+    this.selectedPlaylist = null;
   }
 
   deleteAlarm(alarm: SavedAlarm): void {
