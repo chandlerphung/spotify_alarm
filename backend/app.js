@@ -7,12 +7,13 @@ const cors = require("cors");
 
 const authRoutes = require("./routes/auth.route");
 const userRoutes = require("./routes/user.route");
+const alarmRoutes = require("./routes/alarm.route");
 
 app.use(
   cors({
     origin: "http://localhost:4200", // Your Angular app URL
     credentials: true, // Allow cookies if needed later
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allowedHeaders: [
       "Content-Type",
       "Authorization",
@@ -27,6 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 // Mount route groups
 app.use("/", authRoutes);
 app.use("/api", userRoutes);
+app.use("/api", alarmRoutes);
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);

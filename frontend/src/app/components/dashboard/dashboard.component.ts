@@ -167,7 +167,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       time: this.alarmTime,
       days: selectedDays,
       daysText: selectedDays.length > 0 ? selectedDays.join(', ') : 'One time',
-      playlist: this.selectedPlaylist || null, // <-- include selected playlist
+      playlist: this.selectedPlaylist || null,
     };
 
     this.savedAlarms.push(alarm);
@@ -182,16 +182,51 @@ export class DashboardComponent implements OnInit, OnDestroy {
     // Reset days and playlist
     this.daysOfWeek.forEach((d) => (d.selected = false));
     this.selectedPlaylist = null;
+
+    // ✅ Save to backend
+    this.saveAlarmToDbBackend(alarm);
   }
 
   deleteAlarm(alarm: SavedAlarm): void {
     const index = this.savedAlarms.indexOf(alarm);
-
     if (index > -1) {
       this.savedAlarms.splice(index, 1);
-
       localStorage.setItem('spotify_alarms', JSON.stringify(this.savedAlarms));
     }
+
+    // Also remove from DB
+    this.deleteAlarmFromDb(alarm);
+  }
+
+  deleteAlarmFromDb(alarm: SavedAlarm) {
+    const token = localStorage.getItem('spotify_token');
+    const userId = localStorage.getItem('spotify_id');
+    if (!token || !userId) return;
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true',
+    });
+
+    const body = {
+      time: alarm.time,
+      playlistUri: alarm.playlist?.uri || null,
+    };
+
+    this.http
+      .request(
+        'delete',
+        `https://nonrectifiable-isotopic-venita.ngrok-free.dev/api/alarms/${userId}`,
+        {
+          headers,
+          body,
+        },
+      )
+      .subscribe({
+        next: (res) => console.log('Alarm deleted from DB', res),
+        error: (err) => console.error('Error deleting alarm from DB', err),
+      });
   }
 
   loadSavedAlarms(): void {
@@ -261,6 +296,30 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     // Optional: save selection
     localStorage.setItem('selected_playlist', JSON.stringify(playlist));
+  }
+
+  saveAlarmToDbBackend(alarm: SavedAlarm) {
+    const token = localStorage.getItem('spotify_token');
+    const userId = localStorage.getItem('spotify_id');
+
+    if (!token || !userId) return;
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true',
+    });
+
+    this.http
+      .patch(
+        `https://nonrectifiable-isotopic-venita.ngrok-free.dev/api/alarms/${userId}`,
+        { alarm },
+        { headers },
+      )
+      .subscribe({
+        next: (res) => console.log('Alarm saved to DB', res),
+        error: (err) => console.error('Error saving alarm to DB', err),
+      });
   }
 
   logout(): void {
