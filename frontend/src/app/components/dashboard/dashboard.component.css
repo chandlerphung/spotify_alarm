@@ -17,7 +17,7 @@
   color: white;
   text-align: center;
   padding: 2rem;
-  max-width: 600px;
+  max-width: 600px; /* was 600px */
   margin: 0 auto;
   min-height: 100vh;
   display: flex;
@@ -412,30 +412,111 @@
 }
 
 .playlists-container {
-  margin-top: 20px;
+  margin-top: 25px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 18px;
+  border-radius: 14px;
+  backdrop-filter: blur(8px);
 }
 
+/* Title */
 .playlists-container h3 {
-  margin-bottom: 15px;
-  color: #333;
+  margin-bottom: 12px;
+  font-weight: 600;
+  opacity: 0.9;
 }
 
-.empty-state {
-  padding: 20px;
-  text-align: center;
-  color: #666;
-  font-style: italic;
-}
-
+/* Scroll box */
 .playlists-list {
+  max-height: 300px; /* ~5 items visible */
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  padding-right: 6px;
 }
 
+/* Scrollbar styling */
+.playlists-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.playlists-list::-webkit-scrollbar-thumb {
+  background: #1db954;
+  border-radius: 10px;
+}
+.playlists-list {
+  max-height: 300px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 6px;
+}
+
+/* Playlist row */
 .playlist-item {
-  padding: 15px;
-  background-color: #f5f5f5;
-  border-radius: 4px;
-  border-left: 4px solid #1db954;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background-color: rgba(255, 255, 255, 0.08); /* initial */
+  border-radius: 10px;
+  border-left: 4px solid transparent;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease; /* specifically target background & text */
+  color: white; /* initial text color */
+}
+
+/* Hover - background becomes pure white and text black */
+.playlist-item:hover {
+  background-color: #ffffff !important; /* force pure white */
+  color: black;
+}
+
+/* Playlist name text on hover */
+.playlist-item:hover .playlist-name {
+  color: black;
+}
+
+/* Keep view button green on hover */
+.playlist-item:hover .view-btn {
+  background: #1db954;
+  color: white;
+}
+
+/* Selected state - like hover but stronger */
+.playlist-item.selected {
+  background: rgb(255, 255, 255); /* full white background */
+  color: black; /* dark text so it's readable */
+  border-left: 4px solid #1db954; /* keep accent if you want */
+}
+
+.playlist-item.selected .playlist-name {
+  color: black;
+}
+
+/* Name text */
+.playlist-name {
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: white;
+}
+
+/* View button */
+.view-btn {
+  background: #1db954;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.view-btn:hover {
+  background: #1ed760;
 }

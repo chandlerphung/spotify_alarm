@@ -57,6 +57,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   userData: UserData | null = null;
   loadingUserData: boolean = false;
   userDataError: string | null = null;
+  selectedPlaylist: any | null = null;
 
   private subscriptions = new Subscription();
 
@@ -118,6 +119,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }
 
       this.loadSavedAlarms();
+
+      // 🔥 Auto fetch playlists
+      this.fetchUserInfo();
     });
 
     this.subscriptions.add(paramsSub);
@@ -241,6 +245,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
         console.log('HTTP request completed');
       },
     });
+  }
+
+  openPlaylist(uri: string): void {
+    const link = uri.replace('spotify:playlist:', 'https://open.spotify.com/playlist/');
+
+    window.open(link, '_blank');
+  }
+
+  selectPlaylist(playlist: any): void {
+    this.selectedPlaylist = playlist;
+
+    // Optional: save selection
+    localStorage.setItem('selected_playlist', JSON.stringify(playlist));
   }
 
   logout(): void {

@@ -16,10 +16,6 @@
 
   <!-- Add this wherever you want to display the playlists -->
   <div class="user-info-section">
-    <button (click)="fetchUserInfo()" [disabled]="loadingUserData">
-      {{ loadingUserData ? 'Loading...' : 'View Playlists' }}
-    </button>
-
     <div *ngIf="userDataError" class="error-message">
       {{ userDataError }}
     </div>
@@ -29,11 +25,22 @@
 
       <div *ngIf="userData.playlists.length === 0" class="empty-state">No playlists found</div>
 
-      <div *ngIf="userData.playlists.length > 0" class="playlists-list">
-        <div *ngFor="let playlist of userData.playlists" class="playlist-item">
+      <div class="playlists-list">
+        <div
+          *ngFor="let playlist of userData.playlists"
+          class="playlist-item"
+          [class.selected]="selectedPlaylist?.uri === playlist.uri"
+          (click)="selectPlaylist(playlist)"
+        >
+          <!-- Playlist name (click selects) -->
           <div class="playlist-name">
             {{ playlist.name }}
           </div>
+
+          <!-- View button (does NOT select) -->
+          <button class="view-btn" (click)="openPlaylist(playlist.uri); $event.stopPropagation()">
+            View
+          </button>
         </div>
       </div>
     </div>
