@@ -2,7 +2,8 @@
 
 Wake up to your favorite Spotify playlists automatically.
 
-**Live at: [alarmifyhub.com]([https://www.alarmifyhub.com])**
+Live at: [alarmifyhub.com](https://www.alarmifyhub.com)
+
 
 ---
 
